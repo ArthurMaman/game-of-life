@@ -1,0 +1,26 @@
+.color-container {
+    text-align: left;
+}
+
+.color-input {
+    padding: 5px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.color-test {
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.color-input-text {
+    padding: 5px;
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    border: none;
+}

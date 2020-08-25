@@ -1,0 +1,9 @@
+.range-container {
+    text-align: left;
+}
+
+.range-input {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
