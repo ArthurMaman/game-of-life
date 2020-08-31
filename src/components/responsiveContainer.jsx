@@ -1,5 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {init, addAlive, nextStep, getGrid} from '../util/GameOfLife';
+import {init, addAlive, nextStep, getGrid, savePosition, resetPosition} from '../util/GameOfLife';
 import useInterval from '../util/useInterval';
 
 function createGridPath(rows, columns, width, height) {
@@ -33,19 +33,22 @@ const ResponsiveContainer = ({rows, columns, palette, action}) => {
     let lastActionT = useRef(null)
     useEffect(() => {
         const [type, t] = action ? action.split('-') : [null, null];
+        setTimer(null)
         if(t !== lastActionT.current){
             lastActionT.current = t;
             switch(type){
                 default:
+                case 'pause':
                     break;
                 case 'clear':
                     init(rows, dim[1], columns, dim[0], 'cells');
                     break;
                 case 'play':
+                    savePosition()
                     setTimer(250)
                     break;
-                case 'pause':
-                    setTimer(null)
+                case 'reset':
+                    resetPosition();
                     break;
             }
         }

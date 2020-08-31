@@ -47,7 +47,7 @@ function App() {
                         <button className="button-action" onClick={() => setAction('pause-'+Date.now())}>
                             <img src="/pause.svg" alt="pause" />
                         </button>
-                        <button className="button-action">
+                        <button className="button-action" onClick={() => setAction('reset-'+Date.now())}>
                             <img src="refresh.svg" alt="reset canvas" />
                         </button>
                         <button className="button-action" onClick={() => setAction('clear-'+Date.now())}>

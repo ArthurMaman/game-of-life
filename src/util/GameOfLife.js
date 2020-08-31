@@ -1,6 +1,7 @@
 class GameOfLife{
     constructor(row, height, col, width, ref){
         this.alive = [];
+        this.old = [];
         this.col = col;
         this.row = row
         this.width = width;
@@ -38,9 +39,28 @@ export function init(row, height, col, width, ref){
 }
 
 export function addAlive(pt){
-    GameOfLifeVar.alive.push(pt);
-    GameOfLifeVar.grid[pt[0]][pt[1]] = 1
+    let index = isAlreadyAlive(pt, GameOfLifeVar.alive)
+    if(index === -1){
+        GameOfLifeVar.alive.push(pt);
+        GameOfLifeVar.grid[pt[0]][pt[1]] = 1;
+    } else {
+        GameOfLifeVar.alive.splice(index, 1);
+        GameOfLifeVar.grid[pt[0]][pt[1]] = 0;
+    }
     GameOfLifeVar.draw();
+}
+
+const isAlreadyAlive = (pt, alive) => {
+    let result = -1;
+    let index = 0;
+    while(result === -1 && index < alive.length){
+        if(alive[index][0] === pt[0] && alive[index][1] === pt[1]){
+            result = index;
+        } else {
+            index += 1;
+        }
+    }
+    return result;
 }
 
 export function nextStep(){
@@ -72,6 +92,19 @@ export function regenerate(){
 
 export function getGrid(){
     return GameOfLifeVar.grid;
+}
+
+export function savePosition(){
+    GameOfLifeVar.old = JSON.parse(JSON.stringify(GameOfLifeVar.alive));
+}
+
+export function resetPosition(){
+    GameOfLifeVar.alive = GameOfLifeVar.old;
+    GameOfLifeVar.grid = zero(GameOfLifeVar.row, GameOfLifeVar.col);
+    for(let pt of GameOfLifeVar.alive){
+        GameOfLifeVar.grid[pt[0]][pt[1]] = 1;
+    }
+    regenerate();
 }
 
 const zero = (x, y) => {
