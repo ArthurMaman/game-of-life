@@ -22,7 +22,7 @@
   border-radius: 5px;
   margin: 5px;
   padding: 10px;
-  box-shadow:0px 0px 3px #bfbfbf;
+  box-shadow:0px 0px 3px var(--shadowcolor);
 }
 
 .card__bar {

@@ -15,7 +15,7 @@ function createGridPath(rows, columns, width, height) {
     return path;
 }
 
-const ResponsiveContainer = ({rows, columns, palette, action}) => {
+const ResponsiveContainer = ({rows, columns, palette, action, set}) => {
     const dim = [10000, 10000];
     const [d, setD] = useState('');
     const [timer, setTimer] = useState(null);
@@ -56,11 +56,10 @@ const ResponsiveContainer = ({rows, columns, palette, action}) => {
 
     useInterval(() => {
         const stop = nextStep();
-        if(stop) setTimer(null);
+        if(stop) set('pause-'+Date.now());
     }, timer)
 
     function captureClick(e) {
-        let grid = getGrid();
         const el = document.getElementById('canvas')
         const x = e.clientX * dim[0] / el.getBoundingClientRect().width;
         const y = e.clientY * dim[1] / el.getBoundingClientRect().height;;

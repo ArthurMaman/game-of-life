@@ -32,11 +32,18 @@ function App() {
     const [currentColor, setCurrent] = useState('alive');
 
     const [action, setAction] = useState(null);
+    useEffect(() => {
+        if(action?.includes('play')){
+            document.body.style.setProperty("--shadowcolor", palette.alive);
+        } else {
+            document.body.style.setProperty("--shadowcolor", '#bfbfbf');
+        }
+    }, [action, palette])
 
     return (
         <div className="App">
             <div className="Container">
-                <ResponsiveContainer rows={rows} columns={col} palette={palette} action={action}/>
+                <ResponsiveContainer rows={rows} columns={col} palette={palette} action={action} set={setAction}/>
             </div>
             <div className="left">
                 <div className="card">
