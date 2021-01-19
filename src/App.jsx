@@ -5,11 +5,15 @@ import InputRange from './components/InputRange';
 import InputColor from './components/InputColor';
 import ColorPicker from './components/ColorPicker';
 
+import {getAlive} from "./util/GameOfLife";
+
 function App() {
+    // State of the game and of the menu
     const [rows, setRows] = useState(50);
     const [col, setCol] = useState(50);
     const [open, set] = useState('none');
 
+    // Palette handlers
     const paletteReducer = (old, { type, color }) => {
         if (type === 'reset') return ({
             alive: '#FF7B9C',
@@ -40,10 +44,50 @@ function App() {
         }
     }, [action, palette])
 
+    // Manage saved game
+    const [title, setTitle] = useState('Change me');
+    const [options, setOptions] = useState(JSON.parse(window.sessionStorage.getItem("saved_gamesoflife_titles")) || []);
+    const [selected, setSelected] = useState(options.length > 0 ? options[0] : null);
+    const [savedGame, setSavedGame] = useState(null);
+
+    const save = e => {
+        e.preventDefault();
+        let savedGames = JSON.parse(window.sessionStorage.getItem("saved_gamesoflife_alive") || '{}');
+        savedGames[title] = {
+            rows: rows,
+            col: col,
+            alive: getAlive()
+        };
+        const newOptions = [...options, title]
+        setOptions(newOptions);
+        window.sessionStorage.setItem("saved_gamesoflife_titles", JSON.stringify(newOptions));
+        window.sessionStorage.setItem("saved_gamesoflife_alive", JSON.stringify(savedGames));
+    }
+
+    const load = () => {
+        const newGame = JSON.parse(window.sessionStorage.getItem("saved_gamesoflife_alive"))[selected];
+        if(newGame.rows && newGame.col && newGame.alive){
+            setRows(newGame.rows);
+            setCol(newGame.col);
+            setSavedGame(newGame.alive)
+        }
+    }
+
+    const deleteGame = () => {
+        const newOptions = options.filter(it => it !== selected)
+        const newSelected = newOptions.length > 0 ? newOptions[0] : null;
+        let newGames =  JSON.parse(window.sessionStorage.getItem("saved_gamesoflife_alive") || '{}');
+        if(newGames[selected]) delete newGames[selected];
+        setOptions(newOptions);
+        setSelected(newSelected);
+        window.sessionStorage.setItem("saved_gamesoflife_titles", JSON.stringify(newOptions));
+        window.sessionStorage.setItem("saved_gamesoflife_alive", JSON.stringify(newGames));
+    }
+
     return (
         <div className="App">
             <div className="Container">
-                <ResponsiveContainer rows={rows} columns={col} palette={palette} action={action} set={setAction}/>
+                <ResponsiveContainer rows={rows} columns={col} palette={palette} action={action} set={setAction} saved={savedGame}/>
             </div>
             <div className="left">
                 <div className="card">
@@ -68,7 +112,7 @@ function App() {
                         <button className="button-action" onClick={() => openOrClose('palette')}>
                             <img src="palette.svg" alt="canvas colors" />
                         </button>
-                        <button className="button-action" onClick={() => openOrClose('rules')}>
+                        <button className="button-action" onClick={() => openOrClose('saveload')}>
                             <img src="info.svg" alt="game rules" />
                         </button>
                         <button className="button-action" onClick={() => openOrClose('info')}>
@@ -98,6 +142,23 @@ function App() {
                     </div>
                     <ColorPicker current={palette[currentColor]} set={c => setPalette({ type: currentColor, color: c })}/>
                     <button onClick={() => setPalette({ type: 'reset' })}>Reset</button>
+                </div>
+                <div className="card" style={{ display: open === 'saveload' ? "block" : "none"}}>
+                    <form onSubmit={e => save(e)}>
+                        <label>Save Current</label>
+                        <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
+                        <input type="submit" value="Save" />
+                    </form>
+                    <div>
+                        <label>Manage Saves</label>
+                        <select onChange={e => setSelected(e.target.value)}>
+                            {options.map(it =>
+                                <option value={it} key={it}>{it}</option>
+                            )}
+                        </select>
+                        <button onClick={load}>Load</button>
+                        <button onClick={deleteGame}>Delete</button>
+                    </div>
                 </div>
             </div>
         </div>

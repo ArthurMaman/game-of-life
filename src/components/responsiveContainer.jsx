@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {init, addAlive, nextStep, getGrid, savePosition, resetPosition} from '../util/GameOfLife';
+import React, { useRef, useState, useEffect } from 'react';
+import {init, addAlive, nextStep, savePosition, resetPosition, setAlive} from '../util/GameOfLife';
 import useInterval from '../util/useInterval';
 
 function createGridPath(rows, columns, width, height) {
@@ -15,7 +15,7 @@ function createGridPath(rows, columns, width, height) {
     return path;
 }
 
-const ResponsiveContainer = ({rows, columns, palette, action, set}) => {
+const ResponsiveContainer = ({rows, columns, palette, action, set, saved}) => {
     const dim = [10000, 10000];
     const [d, setD] = useState('');
     const [timer, setTimer] = useState(null);
@@ -28,7 +28,13 @@ const ResponsiveContainer = ({rows, columns, palette, action, set}) => {
             init(rows, dim[1], columns, dim[0], 'cells');
         }
         setD(tmpD);
-    }, [rows, columns, dim[0], dim[1]])
+    }, [rows, columns, dim[0], dim[1], saved])
+
+    useEffect(() => {
+        if(saved){
+            setAlive(saved, rows, columns);
+        }
+    }, [saved])
 
     let lastActionT = useRef(null)
     useEffect(() => {
@@ -62,7 +68,7 @@ const ResponsiveContainer = ({rows, columns, palette, action, set}) => {
     function captureClick(e) {
         const el = document.getElementById('canvas')
         const x = e.clientX * dim[0] / el.getBoundingClientRect().width;
-        const y = e.clientY * dim[1] / el.getBoundingClientRect().height;;
+        const y = e.clientY * dim[1] / el.getBoundingClientRect().height;
         const id = getIndexes(x, y);
         addAlive(id)
     }

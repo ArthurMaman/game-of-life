@@ -26,10 +26,6 @@ class GameOfLife{
         const d = this.aliveToPath();
         document.getElementById(this.ref).setAttribute("d", d)
     }
-
-    getAlive(){
-        return this.alive;
-    }
 }
 
 let GameOfLifeVar = null;
@@ -48,6 +44,21 @@ export function addAlive(pt){
         GameOfLifeVar.grid[pt[0]][pt[1]] = 0;
     }
     GameOfLifeVar.draw();
+}
+
+export function getAlive(){
+    return GameOfLifeVar.alive;
+}
+
+export function setAlive(alive, row, col){
+    GameOfLifeVar.alive = alive;
+    GameOfLifeVar.row = row;
+    GameOfLifeVar.col = col;
+    GameOfLifeVar.grid = zero(GameOfLifeVar.row, GameOfLifeVar.col);
+    for(let pt of GameOfLifeVar.alive){
+        GameOfLifeVar.grid[pt[0]][pt[1]] = 1;
+    }
+    regenerate();
 }
 
 const isAlreadyAlive = (pt, alive) => {
@@ -77,7 +88,7 @@ export function nextStep(){
             if(score === 3 || (score===4 && GameOfLifeVar.grid[i][j] === 1)){ 
                 newGrid[i][j] = 1;
                 newAlive.push([i, j])
-            };
+            }
         }
     }
     GameOfLifeVar.grid = newGrid;
@@ -88,10 +99,6 @@ export function nextStep(){
 
 export function regenerate(){
     GameOfLifeVar.draw();
-}
-
-export function getGrid(){
-    return GameOfLifeVar.grid;
 }
 
 export function savePosition(){
