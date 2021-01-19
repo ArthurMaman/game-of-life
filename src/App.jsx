@@ -113,7 +113,7 @@ function App() {
                             <img src="palette.svg" alt="canvas colors" />
                         </button>
                         <button className="button-action" onClick={() => openOrClose('saveload')}>
-                            <img src="info.svg" alt="game rules" />
+                            <img src="save.svg" alt="game rules" />
                         </button>
                         <button className="button-action" onClick={() => openOrClose('info')}>
                             <img src="help.svg" alt="about this site" />
@@ -145,19 +145,19 @@ function App() {
                 </div>
                 <div className="card" style={{ display: open === 'saveload' ? "block" : "none"}}>
                     <form onSubmit={e => save(e)}>
-                        <label>Save Current</label>
-                        <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
-                        <input type="submit" value="Save" />
+                        <div className="card__title">Save Current</div>
+                        <input className="card__input" type="text" value={title} onChange={e => setTitle(e.target.value)}/>
+                        <input className="card__button" type="submit" value="Save" />
                     </form>
                     <div>
-                        <label>Manage Saves</label>
-                        <select onChange={e => setSelected(e.target.value)}>
+                        <div className="card__title">Manage Saves</div>
+                        <select className="card__input" aria-label="Select a saved game" onChange={e => setSelected(e.target.value)}>
                             {options.map(it =>
                                 <option value={it} key={it}>{it}</option>
                             )}
                         </select>
-                        <button onClick={load}>Load</button>
-                        <button onClick={deleteGame}>Delete</button>
+                        <button className="card__button half" onClick={load}>Load</button>
+                        <button className="card__button half" onClick={deleteGame}>Delete</button>
                     </div>
                 </div>
             </div>
