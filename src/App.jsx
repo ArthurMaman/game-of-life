@@ -168,7 +168,7 @@ function App() {
                 <div className="card" style={{display : open === 'about' ? "block" : "none"}}>
                     <div className="card__title">About this site</div>
                     <p className="about__text">This is a simple sand box to try different spaces of the Game of Life.</p>
-                    <p className="about__text">The Game of Life is a cellular automation that can create an infinite number of shapes and pattern</p>
+                    <p className="about__text">The Game of Life is a cellular automation that can create an infinite number of shapes and patterns.</p>
                     <p className="about__text">The rules and logic of the game are better explained on <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" rel="external">Wikipedia</a>.</p>
                     <p className="about__text">Made with Love and React, powered by Vite.</p>
                 </div>
