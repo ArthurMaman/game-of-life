@@ -60,6 +60,7 @@ function App() {
         };
         const newOptions = [...options, title]
         setOptions(newOptions);
+        if(selected === null) setSelected(title);
         window.sessionStorage.setItem("saved_gamesoflife_titles", JSON.stringify(newOptions));
         window.sessionStorage.setItem("saved_gamesoflife_alive", JSON.stringify(savedGames));
     }
@@ -149,16 +150,20 @@ function App() {
                         <input className="card__input" type="text" value={title} onChange={e => setTitle(e.target.value)}/>
                         <input className="card__button" type="submit" value="Save" />
                     </form>
-                    <div>
-                        <div className="card__title">Manage Saves</div>
-                        <select className="card__input" aria-label="Select a saved game" onChange={e => setSelected(e.target.value)}>
-                            {options.map(it =>
-                                <option value={it} key={it}>{it}</option>
-                            )}
-                        </select>
-                        <button className="card__button half" onClick={load}>Load</button>
-                        <button className="card__button half" onClick={deleteGame}>Delete</button>
-                    </div>
+                    {
+                        options.length > 0 && selected &&
+                        <div>
+                            <div className="card__title">Manage Saves</div>
+                            <select className="card__input" aria-label="Select a saved game"
+                                    onChange={e => setSelected(e.target.value)}>
+                                {options.map(it =>
+                                    <option value={it} key={it}>{it}</option>
+                                )}
+                            </select>
+                            <button className="card__button half" onClick={load}>Load</button>
+                            <button className="card__button half" onClick={deleteGame}>Delete</button>
+                        </div>
+                    }
                 </div>
                 <div className="card" style={{display : open === 'about' ? "block" : "none"}}>
                     <div className="card__title">About this site</div>
