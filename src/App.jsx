@@ -115,7 +115,7 @@ function App() {
                         <button className="button-action" onClick={() => openOrClose('saveload')}>
                             <img src="save.svg" alt="game rules" />
                         </button>
-                        <button className="button-action" onClick={() => openOrClose('info')}>
+                        <button className="button-action" onClick={() => openOrClose('about')}>
                             <img src="help.svg" alt="about this site" />
                         </button>
                     </div>
@@ -159,6 +159,13 @@ function App() {
                         <button className="card__button half" onClick={load}>Load</button>
                         <button className="card__button half" onClick={deleteGame}>Delete</button>
                     </div>
+                </div>
+                <div className="card" style={{display : open === 'about' ? "block" : "none"}}>
+                    <div className="card__title">About this site</div>
+                    <p className="about__text">This is a simple sand box to try different spaces of the Game of Life.</p>
+                    <p className="about__text">The Game of Life is a cellular automation that can create an infinite number of shapes and pattern</p>
+                    <p className="about__text">The rules and logic of the game are better explained on <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" rel="external">Wikipedia</a>.</p>
+                    <p className="about__text">Made with love and React, powered by Vite.</p>
                 </div>
             </div>
         </div>
